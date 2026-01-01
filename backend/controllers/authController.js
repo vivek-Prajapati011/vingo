@@ -1,7 +1,8 @@
 import User from "../models/userModel.js"
 import bycrypt from "bcryptjs"
+import genToken from "../utils/token.js"
 
-const signUp = async (req, res) => {
+export const signUp = async (req, res) => {
     try {
         const {email, fullName, password, mobileNumber, role} = req.body
         const user = await user.findOne({email})
@@ -23,9 +24,17 @@ const signUp = async (req, res) => {
             role,
             password:hashpassword
         })
+        const token = await genToken(user._id)
+        res.cookie("token",token,{
+            secure:false,
+            sameSite:"strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly:true
+        })
+        return res.status(201).json(user)
         
 
     } catch (error) {
-        
+         return res.status(500).json(`sigup error${error}`)
     }
 }
