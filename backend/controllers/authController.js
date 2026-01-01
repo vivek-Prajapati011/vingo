@@ -73,3 +73,12 @@ export const signIn = async (req, res) => {
          return res.status(500).json(`sigup error${error}`)
     }
 }
+
+export const signOUT = async (req,res) => {
+    try {
+        res.clearcookie("token")
+    return res.status(200).json({message:"successfully logout"})
+    } catch (error) {
+        return res.status(500).json(`sigout error${error}`)
+    }
+}
