@@ -1,30 +1,48 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema({
-    fullName:{
-        type: String,
-        required: true
-    },
-    email:{
-        type: String,
-        required:ture,
-        unique:true
-    },
-    password:{
-        type:String,
-    },
-    mobileNumber:{
-        type:String,
-        required: true
-    },
-    role:{
-        type:String,
-        enum:["user","deliveryBoy","owner"],
-        required: true
+const userSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true,
+  },
 
-    }
+  email: {
+    type: String,
+    required: true, // ❗ also fixed typo
+    unique: true,
+  },
 
-},{ timestamps:true })
+  password: {
+    type: String,
+    required: true,
+  },
 
-const User = mongoose.model("user", userSchema)
-export default User
+  mobileNumber: {
+    type: String,
+    required: true,
+  },
+
+  role: {
+    type: String,
+    enum: ["user", "deliveryBoy", "owner"],
+    required: true,
+  },
+
+  // 🔐 OTP fields (THIS IS WHAT YOU WERE MISSING)
+  resetOtp: {
+    type: String,
+  },
+
+  otpExpires: {
+    type: Date,
+  },
+
+  isOtpVerified: {
+    type: Boolean,
+    default: false,
+  },
+
+}, { timestamps: true });
+
+const User = mongoose.model("User", userSchema);
+export default User;
